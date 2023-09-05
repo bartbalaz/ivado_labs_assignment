@@ -11,3 +11,4 @@ seaborn
 pillow
 pyqt5
 wikipedia-api
+lxml
