@@ -1,5 +1,6 @@
 echo "Starting environment"
 
+export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
 export JUPYTER_CONFIG_DIR="./jupyter_config"
 
 # This should only happen once
