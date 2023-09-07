@@ -1,5 +1,5 @@
 from typing import Optional, Tuple, List, Dict
-from pandas import DataFrame, read_html
+from pandas import DataFrame, read_html, read_csv
 from bs4 import BeautifulSoup
 import requests
 import json
@@ -7,9 +7,9 @@ import io
 import re
 import os
 
-REPO_DIR = os.environ("REPO_DIR")
-WORK_DIR = os.environ("WORK_DIR")
+REPO_DIR = os.environ.get('REPO_DIR', './repo')
 
+MASTER_DATA_FILE = REPO_DIR + "/master_date.cvs"
 
 class InvalidContentFromWikipedia(Exception):
     pass
@@ -128,13 +128,22 @@ def create_master_data(custom_locations: bool=True, custom_population: bool=True
         master_data.loc[len(master_data)] = [row['name'], location_city, location_country, visitors, population ]
         #print(f'{row["name"]}: {location_city}, {location_country}, {visitors}, {population}')
 
-
-
-
 def verify_master_data():
     print('Verifying master data')
     global master_data_issues
     master_data_issues = master_data.query("visitors == 0 or population == 0 or country =='' or not country.str.match('^[A-Za-z\ ]*$')")          # or not country.str.match('^[A-Za-z]$')")
+
+
+def save_master_data():
+    print(f'Saving master_data to {MASTER_DATA_FILE}')
+    master_data.to_csv(MASTER_DATA_FILE)
+
+def load_master_data():
+    print(f'Loading master_data from {MASTER_DATA_FILE}')
+    global master_data
+    master_data = read_csv(MASTER_DATA_FILE)
+
+
 
 if __name__ == '__main__':
     download_data()
