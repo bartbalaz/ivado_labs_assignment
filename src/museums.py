@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, List, Dict
 from pandas import DataFrame, read_html
 from bs4 import BeautifulSoup
 import requests
@@ -9,30 +9,22 @@ import math
 class InvalidContentFromWikipedia(Exception):
     pass
 
+class DataNotDownloaded(Exception):
+    pass
 
-class OrigData:
-    def __init__(self, museums_df=None, cities_df=None):
-        self.museums_df = museums_df
-        self.cities_df = cities_df
-
-o = OrigData()
-
-class  MasterData:
-    def __init__(self, museums_cities_df=None):
-        self.museums_cities_df = museums_cities_df
-
-m = MasterData()
-
+# Module data
 location_overrides = { "Vatican City": ("Rome", "Italy"),
                        "Singapore": ("Singapore", "Singapore"),
-                       "Washingon, DC, United States": ("Washington", "Unitesd States")}
+                       "Washington, D.C., United States": ("Washington", "Unitesd States")}
 
-city_populations = { "Vatican City": 825,
+missing_city_populations = { "Vatican City": 825,
                      "Krakow": 766683 }
 
 
+
 # Helper methods
-def _get_table(page: str, section: int ) -> DataFrame:
+
+def _download_table(page: str, section: int) -> DataFrame:
     print(f'Getting page {page}, section {section} from Wikipedia')
     print('1 Downloading')
     response_html = requests.get(f'https://en.wikipedia.org/w/api.php?format=json&page={page}&action=parse&prop=text&section={section}')
@@ -53,9 +45,7 @@ def _get_table(page: str, section: int ) -> DataFrame:
     return response_df
 
 
-
-
-def _extract_location_values(location: str, location_overrides: dict = {}) -> Tuple[str, str]:
+def _get_location_values(location: str) -> Tuple[str, str]:
 
     location_city, location_country = location_overrides.get(location, (None, None))
 
@@ -72,40 +62,43 @@ def _extract_location_values(location: str, location_overrides: dict = {}) -> Tu
 
     return tuple(location_list)
 
-def _get_city_population(city_name: str, cities_df: DataFrame, city_populations: dict = {}) -> int:
-    val = cities_df.query("city == @city_name")
-    return val['population'] if val is not None else city_populations.get('city_name', Math.nan)
+
+def _get_population(city_name: str) -> int:
+    val_df = city_data.query("city == @city_name")
+    return val_df['population'].item() if not val_df.empty else missing_city_populations.get('city_name', 0)
+
+
 
 # Module entry point function
 
 def download_data():
-    global o
-    o = OrigData(_get_table('List_of_most-visited_museums', 1), _get_table('List_of_largest_cities', 5))
+    global museum_data
+    global city_data
 
-    # Set more friendly headers
-    o.museums_df.columns = ['name', 'location', 'visitors']
+    museum_data = _download_table('List_of_most-visited_museums', 1)
+    museum_data.columns = ['name', 'location', 'visitors']
 
-    o.cities_df = o.cities_df.drop(o.cities_df.iloc[:,3:13], axis=1)
-    o.cities_df.columns = ['city', 'country', 'population']
+    city_data = _download_table('List_of_largest_cities', 5)
+    city_data = city_data.drop(city_data.iloc[:, 3:13], axis=1)
+    city_data = city_data.drop(city_data.index[0])
+    city_data.columns = ['city', 'country', 'population']
+    city_data = city_data.astype({'population': int})
+
+
 
 def create_master_data():
-    global o
-    global m
-    global location_overrides
-    global city_populations
-    if o.museums_df is None or o.cities_df is None:
-        print('Download data first')
-        return
+    global master_data
 
-    m = MasterData(DataFrame(data={'name': [], 'location_city': [], 'location_country': [], 'visitors': [], 'city_population': [] }))
-
-    for i, row in o.museums_df.iterrows():
-        (location_city, location_country) = _extract_location_values(row['location'], location_overrides)
+    master_data=DataFrame(data = { 'name': [], 'city': [], 'country': [], 'visitors': [], 'population': [] })
+    for i, row in museum_data.iterrows():
+        # Get the locations
+        location_city, location_country = _get_location_values(row['location'])
+        # Get the visitors value (get rid of the commans and the trailing garbage)
         visitors = int(row['visitors'].split('[')[0].replace(',',''))
-
-        city_pouplation = _get_city_population(location_city, o.cities_df, city_populations)
-        m.museums_cities_df[len(m.museums_cities_df)] = [row['name'], location_city, location_country, visitors, city_pouplation ]
-        print((location_city if location_city is not None else "N/A") + ", " + (location_country if location_country is not None else "N/A") + ", " + str(visitors))
+        # Get the city population
+        population = _get_population(location_city)
+        master_data.loc[len(master_data)] = [row['name'], location_city, location_country, visitors, population ]
+        print(f'{row["name"]}: {location_city}, {location_country}, {visitors}, {population}')
 
 
 if __name__ == '__main__':
