@@ -5,6 +5,11 @@ import requests
 import json
 import io
 import re
+import os
+
+REPO_DIR = os.environ("REPO_DIR")
+WORK_DIR = os.environ("WORK_DIR")
+
 
 class InvalidContentFromWikipedia(Exception):
     pass
@@ -17,8 +22,26 @@ location_overrides = { "Vatican City": ("Rome", "Italy"),
                        "Singapore": ("Singapore", "Singapore"),
                        "Washington, D.C., United States": ("Washington", "Unitesd States")}
 
-missing_city_populations = { "Vatican City": 825,
-                     "Krakow": 766683 }
+missing_city_populations = {    "Vatican City": 825,
+                                "Krakow": 766683,
+                                "Rome": 2860009,
+                                "Konya": 1390051,
+                                "New York City": 8804190,
+                                "Keelung": 362177,
+                                "Taichung": 2831323,
+                                "Florence": 367150,
+                                "Berlin": 3850809,
+                                "Edinburgh": 530990,
+                                "Taipei": 2494813,
+                                "Kaohsiung": 2733964,
+                                "Amsterdam": 921402,
+                                "Melbourne": 5031195,
+                                "Changzhou": 5278121,
+                                "Athens": 3059764,
+                                "Vienna": 1951354,
+                                "Bilbao": 345821,
+                                "Marseille": 870321,
+                             }
 
 
 
@@ -106,6 +129,8 @@ def create_master_data(custom_locations: bool=True, custom_population: bool=True
         #print(f'{row["name"]}: {location_city}, {location_country}, {visitors}, {population}')
 
 
+
+
 def verify_master_data():
     print('Verifying master data')
     global master_data_issues
@@ -113,6 +138,6 @@ def verify_master_data():
 
 if __name__ == '__main__':
     download_data()
-    create_master_data(False, False)
+    create_master_data(False, True)
     verify_master_data()
     print(master_data_issues.to_markdown())
