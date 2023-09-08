@@ -9,7 +9,7 @@ import os
 import torch
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-from lib import data
+from components import data
 
 WORK_DIR = os.environ.get('WORK_DIR', './')
 
