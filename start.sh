@@ -18,8 +18,6 @@ echo JUPYTER_CONFIG_DIR: "$JUPYTER_CONFIG_DIR"
 echo JUPYTER_CONFIG_PATH: "$JUPYTER_CONFIG_PATH"
 echo JUPYTER_RUNTIME_DIR: "$JUPYTER_RUNTIME_DIR"
 
-exit 1
-
 if [ ! -d "$JUPYTER_CONFIG_DIR" ] && [ "$MODE" == "dev" ]; then
   echo "Creating jupyter configuration directory"
   mkdir $JUPYTER_CONFIG_DIR

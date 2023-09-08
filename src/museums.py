@@ -6,10 +6,16 @@ import json
 import io
 import re
 import os
-import torch
+from torchsummary import summary
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-from components import data
+import torch
+from components import data, model
+
+import importlib
+importlib.reload(data)
+importlib.reload(model)
+
 
 WORK_DIR = os.environ.get('WORK_DIR', './')
 
@@ -17,8 +23,7 @@ MASTER_DATA_FILE = WORK_DIR + "/master_date.cvs"
 
 MODEL_FILE = WORK_DIR + "/model.pth"
 
-RANDOM_STATE = 89
-
+LEARNING_RATE = 0.0001
 
 class DataNotDownloaded(Exception):
     pass
@@ -124,11 +129,32 @@ def print_location_overrides():
     print('-------------------')
     print(location_overrides)
 
+def create_model(lr = LEARNING_RATE):
+    print('Creating model')
+    global nn_model
+    nn_model = model.LinearRegression(lr)
+    print('Model parameters')
+    print(nn_model)
+    print(f'Device: {next(nn_model.parameters()).device}')
+    print('Model state')
+    print(str(nn_model.state_dict()))
+    print('Done')
 
-# Model API
+def train_model(threshold: int = 2000000, epochs: int = 100, test_ratio: float = 0):
+    global nn_model
+    data_set = master_data.query("visitors > @threshold").sort_values(by=['visitors', 'population'],
+                                                                      ascending=False)
+    X = data_set['population'].values.tolist()
+    Y = data_set['visitors'].values.tolist()
+
+
+    model.train_model(nn_model, X,Y, epochs, test_ratio)
+
+
 
 if __name__ == '__main__':
     download_data()
     create_master_data(True, True)
     verify_master_data()
-    print(master_data_issues.to_markdown())
+    create_model()
+    train_model()
