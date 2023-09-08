@@ -6,10 +6,15 @@ import json
 import io
 import re
 import os
+import torch
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 REPO_DIR = os.environ.get('REPO_DIR', './repo')
 
 MASTER_DATA_FILE = REPO_DIR + "/master_date.cvs"
+
+RANDOM_STATE = 89
 
 class InvalidContentFromWikipedia(Exception):
     pass
@@ -91,8 +96,6 @@ def _get_population(city_name: str, custom_population: bool) -> int:
     return val_df['population'].item() if not val_df.empty else missing_city_populations.get(city_name, 0) if custom_population else 0
 
 
-
-
 # Module entry point function
 
 def download_data():
@@ -131,8 +134,7 @@ def create_master_data(custom_locations: bool=True, custom_population: bool=True
 def verify_master_data():
     print('Verifying master data')
     global master_data_issues
-    master_data_issues = master_data.query("visitors == 0 or population == 0 or country =='' or not country.str.match('^[A-Za-z\ ]*$')")          # or not country.str.match('^[A-Za-z]$')")
-
+    master_data_issues = master_data.query("visitors == 0 or population == 0 or country =='' or not country.str.match('^[A-Za-z\ ]*$')")
 
 def save_master_data():
     print(f'Saving master_data to {MASTER_DATA_FILE}')
@@ -143,6 +145,37 @@ def load_master_data():
     global master_data
     master_data = read_csv(MASTER_DATA_FILE)
 
+
+def plot():
+    # Plot training data in blue
+    plt.scatter(X_train, Y_train, c="b", s=4, label="Training")
+
+    # Plot test data in green
+    plt.scatter(X_test, Y_test, c="g", s=4, label="Testing")
+
+    if Y_pred is not None:
+        # Plot the predictions in red (predictions were made on the test data)
+        plt.scatter(X_test, Y_pred, c="r", s=4, label="Predictions")
+
+    # Show the legend
+    plt.legend();
+
+
+def learn(threshold: int = 2000000, epochs: int = 1000, test_ratio: float = 20.0):
+    global X_train
+    global X_test
+    global Y_train
+    global Y_test
+    global Y_pred
+    data_set = master_data.query("visitors > @threshold").sort_values(by=['visitors', 'population'], ascending=False)
+    X = data_set['population'].values.tolist()
+    Y = data_set['visitors'].values.tolist()
+
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_ratio/100, random_state=RANDOM_STATE)
+    Y_pred = None
+
+
+    torch.manual_seed(RANDOM_STATE)
 
 
 if __name__ == '__main__':
