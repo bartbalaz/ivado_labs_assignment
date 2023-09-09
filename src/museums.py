@@ -59,78 +59,86 @@ missing_city_populations = {"Vatican City": 825,
 # Data API
 
 def download_data():
-    print('Downloading data from Wikipedia')
+    print('\nDownloading data from Wikipedia')
+    print('-------------------------------')
     global museum_data, city_data
     museum_data, city_data = data.download_data()
-    print('Done')
+    print('\nDone')
 
 
-def create_master_data(custom_locations: bool = True, custom_population: bool = True):
-    print('Creating master data')
+def create_master_data(custom_locations: bool = False, custom_population: bool = True):
+    print('\nCreating master data')
+    print('--------------------')
     global master_data
     master_data = data.create_master_data(museum_data, city_data, location_overrides if custom_locations else {},
                                           missing_city_populations if custom_population else {})
-    print('Done')
+    print('\nDone')
 
 
 def verify_master_data():
-    print('Verifying master data')
+    print('\nVerifying master data')
+    print('---------------------')
     global master_data_issues
     master_data_issues = (
         master_data.query("visitors == 0 or population == 0 or country =='' or not country.str.match('^[A-Za-z\ ]*$')"))
-    print('Done')
+    print('\nDone')
 
 
 def save_master_data():
-    print(f'Saving master_data to {MASTER_DATA_FILE}')
+    print(f'\nSaving master_data to {MASTER_DATA_FILE}')
+    print('------------------------')
     master_data.to_csv(MASTER_DATA_FILE)
-    print('Done')
+    print('\nDone')
 
 
 def load_master_data():
-    print(f'Loading master_data from {MASTER_DATA_FILE}')
+    print(f'\nLoading master_data from {MASTER_DATA_FILE}')
+    print('--------------------------------')
     global master_data
     master_data = read_csv(MASTER_DATA_FILE)
-    print('Done')
+    print('\nDone')
 
 
 def print_museum_data():
-    print('Museum data')
+    print('\nMuseum data')
     print('-----------')
     print(museum_data.to_markdown())
-
+    print('\nDone')
 
 def print_city_data():
-    print('City data')
+    print('\nCity data')
     print('---------')
     print(city_data.to_markdown())
-
+    print('\nDone')
 
 def print_master_data():
-    print('Master data')
+    print('\nMaster data')
     print('-----------')
     print(master_data.to_markdown())
-
+    print('\Done')
 
 def print_master_data_issues():
-    print('Master data issues')
+    print('\nMaster data issues')
     print('------------------')
     print(master_data_issues.to_markdown())
-
+    print('\nDone')
 
 def print_missing_city_populations():
-    print('Missing city populations')
+    print('\nMissing city populations')
     print('-------------------------')
     print(missing_city_populations)
+    print('\nDone')
 
 
 def print_location_overrides():
-    print('Locations overrides')
+    print('\nLocations overrides')
     print('-------------------')
     print(location_overrides)
+    print('\nDone')
 
 def create_model(lr = LEARNING_RATE):
-    print('Creating model')
+    print('\nCreating model')
+    print('--------------')
     global nn_model
     nn_model = model.LinearRegression(lr)
     print('Model parameters')
@@ -138,17 +146,24 @@ def create_model(lr = LEARNING_RATE):
     print(f'Device: {next(nn_model.parameters()).device}')
     print('Model state')
     print(str(nn_model.state_dict()))
-    print('Done')
+    print('\nDone')
 
-def train_model(threshold: int = 2000000, epochs: int = 100, test_ratio: float = 0):
-    global nn_model
+def train_model(threshold: int = 2000000, epochs: int = 20000, test_ratio: int = 20):
+    print('\nTraining')
+    print('--------')
+
     data_set = master_data.query("visitors > @threshold").sort_values(by=['visitors', 'population'],
                                                                       ascending=False)
     X = data_set['population'].values.tolist()
     Y = data_set['visitors'].values.tolist()
 
+    nn_model.train_model(X,Y, epochs, test_ratio)
+    print('\nDone')
 
-    model.train_model(nn_model, X,Y, epochs, test_ratio)
+def plot_training():
+    nn_model.plot_training()
+
+
 
 
 
@@ -157,4 +172,5 @@ if __name__ == '__main__':
     create_master_data(True, True)
     verify_master_data()
     create_model()
-    train_model()
+    train_model(epochs=1000, test_ratio=10)
+    nn_model.figure()
