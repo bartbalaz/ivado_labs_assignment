@@ -20,4 +20,12 @@ The figure below depicts the deployment layout.
 
 ![Deployment layout](docs/layout.jpg)
 
-### Host system
+### Host
+The host has the following purposes:
+- Development platform: The host run
+- Docker server:
+- 
+
+
+### Prerequisites
+**Note**: 
