@@ -68,6 +68,7 @@ This is a demo/assignment application, because of time constrainte it contains t
 - The system has neither been designed nor tested for all the possible corner cases
 - The unit test set only contains several test cases.
 - Comments are minimal
+- Only the Ubuntu-22.04 on Windows 11 WSL2 with Nvidia GPU support configuration has been tested, other configuration will require deployment adjustments
 
 ## Source code structure
 - __src/museums.py__: Contains the main api module that allows to access all the feature of the application
@@ -91,6 +92,25 @@ This is a demo/assignment application, because of time constrainte it contains t
 ```commandline
 git clone git@github.com:bartbalaz/ivado_labs_assignment.git assignemnt
 ```
-
+- Switch to the cloned repository
+```commandline
+cd assignment
+```
+- Optionl: Run the unit tests
+```commandline
+./test.sh
+```
+- Optional: Start Jupyter notebook locally
+```commandline
+./start.sh
+```
+- Buld the Docker image
+```commandline
+./docker_build.sh
+```
+- Start the docker image
+```commandline
+./docker_start.sh
+```
 
 
