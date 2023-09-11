@@ -33,8 +33,8 @@ It hosts the IDE along with all the necessary environment, tools and libraries f
   - GPUs
   - Docker server
   - Docker registry
-  - File server for the target image
-  - etc.
+  - File server for Docker image persistency
+  
 ### Wikipedia server
 Acts as the data source, data is retrieved using the [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page) 
 
@@ -42,15 +42,27 @@ Acts as the data source, data is retrieved using the [Wikipedia API](https://www
 Provides the execution environment, namely the container based on Ubuntu-22.04 contains all the required Python end Nvidia components necessary for executing the target image.
 The target image:
 - Exposes the TCP port 8888
-- Maps the host file system from persistency
-- Provides access to the  
+- Maps the host file system for persistency, Docke image internal __/run__ folder to __<cloned directory>__
+- Provides access to the GPU hardware
 
 ## Repository content
-| File/folder | Description   
-|:------------|:--------------|
-| Main.ipynb | Jupyter notebook allowing access to the api |
-| docker_build.sh | Script wrapping the Docker image creation |
-| docker_setup.sh | Script that creates the conteeng of the Docker image | 
+|    File/folder    |   Type    | Description                                          |                                          
+|:-----------------:|:---------:|:-----------------------------------------------------|
+|    Main.ipynb     |   File    | Jupyter notebook allowing access to the api          |
+|  docker_build.sh  |   File    | Script wrapping the Docker image creation            |
+|  docker_setup.sh  |   File    | Script that creates the conteeng of the Docker image |
+|  docker_start.sh  |   File    | Script wrapping the docker container startup         |
+|    Dockerfile     |   File    | Docker image description file                        | 
+| requirements.txtt |   File    | Python dependencies requirements                     |
+|     start.sh      |   File    | Jupyter notebook startup script, command line for development purpose or Docker image entry point | 
+|      test.sh      |   File    | Scrpt launching the unit tests |
+|  jupyter_config   | Directory | Contains the Jupyter notebook configuraiton |
+|       data        | Directory | Contains the saved master data and regression trained model |
+|        src        | Directory | Contains the main library source code |
+|       test        | Directory | Contains the main library test scripts| 
+
+## Limitations
+
 
 
 
