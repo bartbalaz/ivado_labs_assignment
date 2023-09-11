@@ -40,7 +40,17 @@ Acts as the data source, data is retrieved using the [Wikipedia API](https://www
 
 ### Docker
 Provides the execution environment, namely the container based on Ubuntu-22.04 contains all the required Python end Nvidia components necessary for executing the target image.
-The 
+The target image:
+- Exposes the TCP port 8888
+- Maps the host file system from persistency
+- Provides access to the  
 
-### Prerequisites
-**Note**: 
+## Repository content
+| File/folder | Description   
+|:------------|:--------------|
+| Main.ipynb | Jupyter notebook allowing access to the api |
+| docker_build.sh | Script wrapping the Docker image creation |
+| docker_setup.sh | Script that creates the conteeng of the Docker image | 
+
+
+
