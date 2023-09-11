@@ -3,6 +3,7 @@ echo
 
 # Project configuration
 export WORK_DIR=$(pwd)
+export DATA_DIR=$(pwd)/data
 export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
 
 # Jupyter configuraiton
@@ -11,14 +12,19 @@ export JUPYTER_CONFIG_PATH=""
 export JUPYTER_RUNTIME_DIR=$WORK_DIR/.jupyter_runtime
 
 echo "Configuration"
-echo "------------"
+echo "-------------"
 echo WORK_DIR: "$WORK_DIR"
 echo PYTHONPATH: "$PYTHONPATH"
 echo JUPYTER_CONFIG_DIR: "$JUPYTER_CONFIG_DIR"
 echo JUPYTER_CONFIG_PATH: "$JUPYTER_CONFIG_PATH"
 echo JUPYTER_RUNTIME_DIR: "$JUPYTER_RUNTIME_DIR"
 
-if [ ! -d "$JUPYTER_CONFIG_DIR" ] && [ "$MODE" == "dev" ]; then
+if [ ! -d "$DATA_DIR" ]; then
+  echo "Creating data directory"
+  mkdir $DATA_DIR
+fi
+
+if [ ! -d "$JUPYTER_CONFIG_DIR" ]; then
   echo "Creating jupyter configuration directory"
   mkdir $JUPYTER_CONFIG_DIR
   jupyter lab  --generate-config

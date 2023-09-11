@@ -1,15 +1,8 @@
-from typing import Optional, Tuple, List, Dict
-from pandas import DataFrame, read_html, read_csv
-from bs4 import BeautifulSoup
-import requests
-import json
-import io
-import re
+from typing import List
+
+import pickle
+from pandas import read_csv
 import os
-from torchsummary import summary
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import torch
 from components import data, model
 
 import importlib
@@ -17,11 +10,11 @@ importlib.reload(data)
 importlib.reload(model)
 
 
-WORK_DIR = os.environ.get('WORK_DIR', './')
+DATA_DIR = os.environ.get('DATA_DIR', './')
 
-MASTER_DATA_FILE = WORK_DIR + "/master_date.cvs"
+MASTER_DATA_FILE = DATA_DIR + "/master_date.cvs"
 
-MODEL_FILE = WORK_DIR + "/model.pth"
+MODEL_FILE = DATA_DIR + "/model.pt"
 
 LEARNING_RATE = 0.0001
 
@@ -66,7 +59,7 @@ def download_data():
     print('\nDone')
 
 
-def create_master_data(custom_locations: bool = False, custom_population: bool = True):
+def create_master_data(custom_locations: bool = True, custom_population: bool = True):
     print('\nCreating master data')
     print('--------------------')
     global master_data
@@ -163,9 +156,30 @@ def train_model(threshold: int = 2000000, epochs: int = 20000, test_ratio: int =
 def plot_training():
     nn_model.plot_training()
 
+def print_training():
+    nn_model.print_training()
+
+def evaluate(vector: List[int]):
+    print('Evaluating')
+    print('----------')
+    print(f'Input: {str(vector)}')
+    print(f'Output: {str(nn_model.evaluate(vector))}')
 
 
+def save_model():
+    print(f'Saving model to {MODEL_FILE}')
+    print('---------------------')
+    with open(MODEL_FILE, 'wb') as f:
+        pickle.dump(nn_model, f)
+    f.close()
 
+def load_model():
+    print(f'Loading model from {MODEL_FILE}')
+    print('---------------------')
+    global nn_model
+    with open(MODEL_FILE, 'rb') as f:
+        nn_model = pickle.load(f)
+    f.close()
 
 if __name__ == '__main__':
     download_data()
@@ -173,4 +187,4 @@ if __name__ == '__main__':
     verify_master_data()
     create_model()
     train_model(epochs=1000, test_ratio=10)
-    nn_model.figure()
+    evaluate([1000000, 2000000])

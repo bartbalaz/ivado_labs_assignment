@@ -31,6 +31,7 @@ class LinearRegression(torch.nn.Module):
 
 
     def train_model(self, x_in: List[int], y_in: List[int], epochs: int, test_ratio: int):
+        self.to(device)
         self.training_params = f's: {len(x_in)}, e: {epochs}, r:{test_ratio}%'
         print(f'Parameters: {self.training_params}')
 
@@ -66,53 +67,49 @@ class LinearRegression(torch.nn.Module):
             ### Training
             self.train()
 
-            # 1. Forward pass
+            # Forward pass
             y_pred = self(self.x_train)
 
-            # 2. Calculate loss
+            # Loss
             loss = self.loss_fn(y_pred, self.y_train)
 
-            # 3. Zero grad optimizer
+            # Zero grad optimizer
             self.optimizer.zero_grad()
 
-            # 4. Loss backward
+            # Loss backward
             loss.backward()
 
-            # 5. Step the optimizer
+            # Step the optimizer
             self.optimizer.step()
 
             if test_ratio > 0:
                 ### Testing
                 self.eval()  # put the model in evaluation mode for testing (inference)
-                # 1. Forward pass
+                # Forward pass
                 with torch.inference_mode():
                     self.y_pred = self(self.x_test)
 
-                    # 2. Calculate the loss
+                    # Calculate the loss
                     test_loss = self.loss_fn(self.y_pred, self.y_test)
-
 
             if epoch % (epochs / 10) == 0:
                 if test_ratio > 0:
                     test_loss = test_loss.cpu()
                 else:
-                    test_loss = 'N/A'
+                    test_loss = 0
 
                 print(f"Epoch: {epoch} | Train loss: {loss} | Test loss: {test_loss} ")
                 self.training_run.loc[len(self.training_run)] = [ epoch, loss.cpu().detach().numpy(), test_loss ]
 
         # Sweep test
-        # x_swipe = torch.from_numpy(self.scaler_x.fit(range(min(x_in), max(x_in), 1000).unsqueeze(dim=1)))
-
-        self.x_swipe = torch.from_numpy(self.scaler_x.transform(torch.FloatTensor(range(min(x_in), max(x_in), 1000)).unsqueeze(dim=1))).to(device)
-        self.eval()  # put the model in evaluation mode for testing (inference)
-        # 1. Forward pass
+        self.x_sweep = torch.from_numpy(self.scaler_x.transform(torch.FloatTensor(range(min(x_in), max(x_in), 1000)).unsqueeze(dim=1))).to(device)
+        self.eval()
         with torch.inference_mode():
-            self.y_swipe = self(self.x_swipe)
+            self.y_sweep = self(self.x_sweep)
 
         # De-scale after training
-        self.x_swipe = self.scaler_x.inverse_transform(self.x_swipe.cpu())
-        self.y_swipe = self.scaler_y.inverse_transform(self.y_swipe.cpu())
+        self.x_sweep = self.scaler_x.inverse_transform(self.x_sweep.cpu())
+        self.y_sweep = self.scaler_y.inverse_transform(self.y_sweep.cpu())
 
         if test_ratio > 0:
             self.x_train = self.scaler_x.inverse_transform(self.x_train.cpu())
@@ -130,7 +127,7 @@ class LinearRegression(torch.nn.Module):
         fig, axs = plt.subplots(2, 1, figsize=(12, 12))
         fig.suptitle(f'Training params: {self.training_params}')
         axs[0].scatter(self.x_train, self.y_train, c="b", s=4, label="Training")
-        axs[0].scatter(self.x_swipe, self.y_swipe, c="y", s=4, label="Swipe")
+        axs[0].scatter(self.x_sweep, self.y_sweep, c="y", s=4, label="Sweep")
         if self.x_test is not None:
             axs[0].scatter(self.x_test, self.y_test, c="g", s=4, label="Testing")
         if self.y_pred is not None:
@@ -140,12 +137,21 @@ class LinearRegression(torch.nn.Module):
         axs[1].plot(self.training_run['test_loss'].values, c='g', label='Testing loss')
         axs[1].legend()
 
+    def print_training(self):
+        print('Training summary')
+        print('----------------')
+        print('Parameters:')
+        print(self.training_params)
+        print(self.training_run.to_markdown())
+
     def evaluate(self, vector: List[int]) -> List[int]:
-        vector = torch.from_numpy(self.scaler_x.transform(torch.FloatTensor(vector)).unsqueeze(dim=1)).to(device)
+        self.to(device)
+        vector = torch.from_numpy(self.scaler_x.transform(torch.FloatTensor(vector).unsqueeze(dim=1))).to(device)
         self.eval()  # put the model in evaluation mode for testing (inference)
         # 1. Forward pass
         with torch.inference_mode():
-            result = self(vector)
+            result = self(vector).cpu()
 
+        r = self.scaler_y.inverse_transform(result).squeeze().tolist()
 
-
+        return r
