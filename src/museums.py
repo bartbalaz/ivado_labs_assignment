@@ -1,18 +1,18 @@
 from typing import List
-
 import pickle
 from pandas import read_csv
 import os
 from components import data, model
-
 import importlib
+
+# To force reload of data and model components upon a reload of this module
 importlib.reload(data)
 importlib.reload(model)
 
-
+# Default values and parameters
 DATA_DIR = os.environ.get('DATA_DIR', './')
 
-MASTER_DATA_FILE = DATA_DIR + "/master_date.cvs"
+MASTER_DATA_FILE = DATA_DIR + "/master_data.cvs"
 
 MODEL_FILE = DATA_DIR + "/model.pt"
 
@@ -20,7 +20,6 @@ LEARNING_RATE = 0.0001
 
 class DataNotDownloaded(Exception):
     pass
-
 
 # Module data
 location_overrides = {"Vatican City": ("Rome", "Italy"),
@@ -50,7 +49,6 @@ missing_city_populations = {"Vatican City": 825,
 
 
 # Data API
-
 def download_data():
     print('\nDownloading data from Wikipedia')
     print('-------------------------------')
@@ -98,23 +96,27 @@ def print_museum_data():
     print(museum_data.to_markdown())
     print('\nDone')
 
+
 def print_city_data():
     print('\nCity data')
     print('---------')
     print(city_data.to_markdown())
     print('\nDone')
 
+
 def print_master_data():
     print('\nMaster data')
     print('-----------')
     print(master_data.to_markdown())
-    print('\Done')
+    print('\nDone')
+
 
 def print_master_data_issues():
     print('\nMaster data issues')
     print('------------------')
     print(master_data_issues.to_markdown())
     print('\nDone')
+
 
 def print_missing_city_populations():
     print('\nMissing city populations')
@@ -129,6 +131,8 @@ def print_location_overrides():
     print(location_overrides)
     print('\nDone')
 
+
+# Model API
 def create_model(lr = LEARNING_RATE):
     print('\nCreating model')
     print('--------------')
@@ -140,6 +144,7 @@ def create_model(lr = LEARNING_RATE):
     print('Model state')
     print(str(nn_model.state_dict()))
     print('\nDone')
+
 
 def train_model(threshold: int = 2000000, epochs: int = 20000, test_ratio: int = 20):
     print('\nTraining')
@@ -153,11 +158,14 @@ def train_model(threshold: int = 2000000, epochs: int = 20000, test_ratio: int =
     nn_model.train_model(X,Y, epochs, test_ratio)
     print('\nDone')
 
+
 def plot_training():
     nn_model.plot_training()
 
+
 def print_training():
     nn_model.print_training()
+
 
 def evaluate(vector: List[int]):
     print('Evaluating')
@@ -172,6 +180,7 @@ def save_model():
     with open(MODEL_FILE, 'wb') as f:
         pickle.dump(nn_model, f)
     f.close()
+
 
 def load_model():
     print(f'Loading model from {MODEL_FILE}')

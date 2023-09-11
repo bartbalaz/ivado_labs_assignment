@@ -1,5 +1,11 @@
+#!/bin/bash
+
 echo "Starting environment"
 echo
+
+if [ ! -z $1 ]; then
+  cd $1
+fi
 
 # Project configuration
 export WORK_DIR=$(pwd)
@@ -30,4 +36,4 @@ if [ ! -d "$JUPYTER_CONFIG_DIR" ]; then
   jupyter lab  --generate-config
 fi
 
-jupyter lab --no-browser --ip='*' --NotebookApp.token='' --NotebookApp.password=''
+jupyter lab --no-browser --ip='*' --NotebookApp.token='' --NotebookApp.password='' --allow-root

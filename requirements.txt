@@ -1,5 +1,4 @@
 torch>=1.2.0
-tensorflow
 scikit-learn
 torchvision
 torchsummary
@@ -7,8 +6,6 @@ pandas
 numpy
 matplotlib
 jupyter
-seaborn
-pillow
 pyqt5
 wikipedia-api
 lxml

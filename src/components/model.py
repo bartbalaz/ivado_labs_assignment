@@ -8,7 +8,6 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 class InvaidEpochs(Exception):
     pass
 
-
 RANDOM_SEED = 89
 
 dtype = torch.float
@@ -147,8 +146,7 @@ class LinearRegression(torch.nn.Module):
     def evaluate(self, vector: List[int]) -> List[int]:
         self.to(device)
         vector = torch.from_numpy(self.scaler_x.transform(torch.FloatTensor(vector).unsqueeze(dim=1))).to(device)
-        self.eval()  # put the model in evaluation mode for testing (inference)
-        # 1. Forward pass
+        self.eval()
         with torch.inference_mode():
             result = self(vector).cpu()
 
