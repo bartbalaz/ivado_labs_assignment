@@ -2,7 +2,7 @@ from typing import List
 import pickle
 from pandas import read_csv
 import os
-from components import data, model
+from src.components import data, model
 import importlib
 
 # To force reload of data and model components upon a reload of this module
@@ -18,7 +18,7 @@ MODEL_FILE = DATA_DIR + "/model.pt"
 
 LEARNING_RATE = 0.0001
 
-class DataNotDownloaded(Exception):
+class FileDoesNotExist(Exception):
     pass
 
 # Module data
@@ -75,18 +75,20 @@ def verify_master_data():
     print('\nDone')
 
 
-def save_master_data():
-    print(f'\nSaving master_data to {MASTER_DATA_FILE}')
+def save_master_data(master_data_file: str = MASTER_DATA_FILE):
+    print(f'\nSaving master_data to {master_data_file}')
     print('------------------------')
-    master_data.to_csv(MASTER_DATA_FILE)
+    master_data.to_csv(master_data_file)
     print('\nDone')
 
 
-def load_master_data():
-    print(f'\nLoading master_data from {MASTER_DATA_FILE}')
+def load_master_data(master_data_file: str = MASTER_DATA_FILE):
+    print(f'\nLoading master_data from {master_data_file}')
     print('--------------------------------')
+    if not os.path.exists(master_data_file):
+        raise FileDoesNotExist
     global master_data
-    master_data = read_csv(MASTER_DATA_FILE)
+    master_data = read_csv(master_data_file)
     print('\nDone')
 
 
@@ -164,7 +166,10 @@ def plot_training():
 
 
 def print_training():
+    print('Training summary')
+    print('----------------')
     nn_model.print_training()
+    print('\nDone')
 
 
 def evaluate(vector: List[int]):
@@ -172,23 +177,29 @@ def evaluate(vector: List[int]):
     print('----------')
     print(f'Input: {str(vector)}')
     print(f'Output: {str(nn_model.evaluate(vector))}')
+    print('\nDone')
 
 
-def save_model():
-    print(f'Saving model to {MODEL_FILE}')
+def save_model(model_file: str = MODEL_FILE):
+    print(f'Saving model to {model_file}')
     print('---------------------')
-    with open(MODEL_FILE, 'wb') as f:
+    with open(model_file, 'wb') as f:
         pickle.dump(nn_model, f)
     f.close()
+    print('\nDone')
 
 
-def load_model():
-    print(f'Loading model from {MODEL_FILE}')
+def load_model(model_file: str = MODEL_FILE):
+    print(f'Loading model from {model_file}')
     print('---------------------')
     global nn_model
-    with open(MODEL_FILE, 'rb') as f:
+    if not os.path.exists(model_file):
+        raise FileDoesNotExist
+    with open(model_file, 'rb') as f:
         nn_model = pickle.load(f)
     f.close()
+    print('\nDone')
+
 
 if __name__ == '__main__':
     download_data()

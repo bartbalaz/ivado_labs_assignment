@@ -13,10 +13,12 @@ class TestData(TestCase):
                 self.reason=None
                 self.status_code=404
 
+        test_page='some_page'
+        test_section=55
         request_get.return_value = ReturnedValue()
         with self.assertRaises(Exception):
-            _download_table("some_page", 55)
+            _download_table(test_page, test_section)
 
-        request_get.assert_called_with(f'https://en.wikipedia.org/w/api.php?format=json&page=some_page&action=parse&prop=text&section=55')
+        request_get.assert_called_with(f'https://en.wikipedia.org/w/api.php?format=json&page={test_page}&action=parse&prop=text&section={test_section}')
         json_loads.assert_not_called()
 

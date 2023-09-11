@@ -8,8 +8,10 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 class InvaidEpochs(Exception):
     pass
 
+# Set a seed for consistent
 RANDOM_SEED = 89
 
+# Detect device type
 dtype = torch.float
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -18,6 +20,8 @@ class LinearRegression(torch.nn.Module):
 
     def __init__(self, lr):
         super().__init__()
+        torch.manual_seed(RANDOM_SEED)
+
         self.linear_layer = torch.nn.Linear(in_features=1, out_features=1, device=device, dtype=torch.float64)
         self.to(device)
         self.loss_fn = torch.nn.L1Loss()
@@ -42,8 +46,6 @@ class LinearRegression(torch.nn.Module):
 
         x = torch.from_numpy(self.scaler_x.fit_transform(x))
         y = torch.from_numpy(self.scaler_y.fit_transform(y))
-
-        torch.manual_seed(RANDOM_SEED)
 
         if test_ratio > 0:
             self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size= float(test_ratio / 100),
@@ -137,8 +139,6 @@ class LinearRegression(torch.nn.Module):
         axs[1].legend()
 
     def print_training(self):
-        print('Training summary')
-        print('----------------')
         print('Parameters:')
         print(self.training_params)
         print(self.training_run.to_markdown())
