@@ -22,9 +22,13 @@ The figure below depicts the deployment layout.
 
 ### Host
 The host has the following purposes:
-- Development platform: The host run
-- Docker server:
-- 
+- Development platform: While developing the solution a Linux Ubuntu-22.04 (WSL) is used as the deveopment platofrm. It hosts the IDE along with all the necessary environment and libraries.  
+- Execution environment
+  - GPU host
+  - Docker server:
+  - Docker registry
+    etc.
+
 
 
 ### Prerequisites
