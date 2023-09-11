@@ -15,21 +15,32 @@ You will be evaluated not only on how your code works but also on the rationale 
 
 # Solution
 
+## General idea
+As per requirements a small library is developed. The library allows to gather and prepare the required data for further analysis. The analysis consists in training an ML model 
+to perform a linear regression allowing to This library is packaged in a docker image that exposes 
+a Jupyter notebook. The notebook allows to invoke the different functions from the library.   
+
 ## High level deployment layout
 The figure below depicts the deployment layout.
 
 ![Deployment layout](docs/layout.jpg)
 
 ### Host
-The host has the following purposes:
-- Development platform: While developing the solution a Linux Ubuntu-22.04 (WSL) is used as the deveopment platofrm. It hosts the IDE along with all the necessary environment and libraries.  
-- Execution environment
-  - GPU host
-  - Docker server:
+Has the following purposes:
+- **Development platform**: While developing the solution a Linux Ubuntu-22.04 (WSL) is used as the development platform. 
+It hosts the IDE along with all the necessary environment, tools and libraries for image creation, easy execution and testing  
+- **Execution platform** for the target image:
+  - GPUs
+  - Docker server
   - Docker registry
-    etc.
+  - File server for the target image
+  - etc.
+### Wikipedia server
+Acts as the data source, data is retrieved using the [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page) 
 
-
+### Docker
+Provides the execution environment, namely the container based on Ubuntu-22.04 contains all the required Python end Nvidia components necessary for executing the target image.
+The 
 
 ### Prerequisites
 **Note**: 
