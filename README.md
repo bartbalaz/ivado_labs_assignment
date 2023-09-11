@@ -15,4 +15,6 @@ You will be evaluated not only on how your code works but also on the rationale 
 
 # Solution
 
-## General architecture
+## High level deployment layout
+The figure below depicts the deployment layout.
+![Deployment layout](docs/layout.jpg)

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t challenge -f Dockerfile .
+docker build -t ivado_labs_assignment -f Dockerfile .
