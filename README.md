@@ -173,5 +173,5 @@ museums.plot_training() # For plotting
 ```
 - The model may be used to evaluate values
 ```python
-museums.evalutat([<integer value of the city population>, <...>])
+museums.evalutate([<integer value of the city population>, <...>])
 ```
