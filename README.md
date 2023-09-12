@@ -58,14 +58,17 @@ The target image:
 |        src        | Directory | Contains the main library source code |
 |       test        | Directory | Contains the main library test scripts| 
 
-## Limitations
+## Limitations of the demonstration system
 This is a demo/assignment application, because of time constrainte it contains the following constraints:
-- The security considerations have been omitted: It is possible to inject malicious values through the API
-- Model persistency is achieved using Python **pickle** library which is not secure
-- The system has neither been designed nor tested for all the possible corner cases
+- The security considerations have been omitted: It is possible to inject malicious values through the API.
+- Model persistency is achieved using Python **pickle** library which is not secure.
+- The system has neither been designed nor tested for all the possible corner cases.
 - The unit test set only contains several test cases.
-- Comments are minimal
-- Only the Ubuntu-22.04 on Windows 11 WSL2 with Nvidia GPU support configuration has been tested, other configuration will require deployment adjustments
+- Comments are minimal.
+- Only the Ubuntu-22.04 on Windows 11 WSL2 with Nvidia GPU support configuration has been tested, other configuration 
+will require deployment adjustments.
+- The current implementation and procedure allows only for a simple single user peristance and sharing, the presented 
+scheme would need to be enhanced to allow contributions from multiple team members.
 
 ## Source code structure
 - __src/museums.py__: Main api module that allows to access all the feature of the application
@@ -75,7 +78,7 @@ This is a demo/assignment application, because of time constrainte it contains t
 ## Prerequisites
 - Intel 64bit platform
 - Windows 11
-- Ubuntu-22.04 in the Windows 11 WSL2 environment
+- Ubuntu-22.04 in the Windows 11 WSL2 environment the setup procedure may be found [here](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview)
 - Docker service
 - Python 3.10.x (development only)
 - Pip 22.x.y (development only)
@@ -109,7 +112,14 @@ cd assignment
 ```commandline
 ./docker_start.sh
 ```
-- Stop the docker image by issuing Ctrl+C in the console
+- Once done working (done with **Experimentation**), stop the docker image by issuing __'Ctrl+C'__, then __'y'__, in 
+the console.
+- The work may be persisted and shared with other by pushing the changes to the github repository (see limitations above).
+```commandline
+git add .
+git commit -m "<some comment>"
+git push orign main
+```
 
 ### Experimentation in the browser Jupyter notebook
 - Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
@@ -117,7 +127,7 @@ cd assignment
 ```python
 import importlib
 import museums
-# This is required for development purpose to ensure that the library is reloaded by Jupyter when the code cell is ran
+# This is required for development purpose to ensure that the library is reloaded by Jupyter when the code cell is run
 importlib.reload(museums)    
 ```
 - Download the data from Wikipedia [Museums page](https://en.wikipedia.org/wiki/List_of_most_visited_museums) and 
@@ -130,17 +140,34 @@ museums.print_city_data()
 - Create master that will serve as the model input, some data customization is specified in the museums module for: 1. Missing populations 
 (**custom_locations**) and 2. Locations naming adjustments (**custom_population**). The custom location and population may adjusted by modifying the
 **museums.location_overrides** and **museums.missing_city_populations** member variables (viewed using 
-**print_missing_city_populations()** and **print_location_overrides()** methods).
+**museums.print_missing_city_populations()** and **museums.print_location_overrides()** methods).
 ```python
 museums.create_master_data(custom_locations = True, custom_population = True)
 ```
-- Verify master data, this steps generates a  
+- Verify master data, this steps generates a table that shows all the missing cells. 
 ```python
 museums.verify_master_data()
 museums.print_master_data_issues()
 ```
-
-
-### API reference - Data management
-
-### API reference - Model management
+- Once satisfied with the data, the data may be saved and later loaded.
+```python
+museums.save_master_data() # For saving
+musemms.load_master_data() # For loading
+```
+- When the master data is ready the model trainng may take place, create and train model. The parameters are
+**lr**: learning rate, **threshold**: minimum museum visits to be part of the training set, **epochs**: The number of 
+training iterations, **test_ratio**: The percentage proportion of the datapoints to be used as the data set
+```python
+museums.create_model(lr = 0.001)
+museums.train_model(threshold=2000000, epochs: int = 20000, test_ratio=20)
+```
+- Once the training has been done it may be saved and loaded
+```python
+museums.save_model() # For saving
+museums.load_model() # For loading
+```
+- The training run details may be printed or plotted
+```python
+museums.print_training()  # For printing
+museums.plot_training() # For plotting
+```
