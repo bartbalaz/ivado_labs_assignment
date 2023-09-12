@@ -29,11 +29,8 @@ The figure below depicts the deployment layout.
 Has the following purposes:
 - **Development platform**: While developing the solution a Linux Ubuntu-22.04 (WSL) is used as the development platform. 
 It hosts the IDE along with all the necessary environment, tools and libraries for image creation, easy execution and testing  
-- **Execution platform** for the target image:
-  - GPUs
-  - Docker server
-  - Docker registry
-  - File server for Docker image persistency
+- **Execution platform**: for the target image, providing GPU hardware, Docker server, Docker registry (unless a registry service is used)
+File server for content peristency
   
 ### Wikipedia server
 Acts as the data source, data is retrieved using the [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page) 
@@ -57,7 +54,7 @@ The target image:
 |     start.sh      |   File    | Jupyter notebook startup script, command line for development purpose or Docker image entry point | 
 |      test.sh      |   File    | Scrpt launching the unit tests |
 |  jupyter_config   | Directory | Contains the Jupyter notebook configuraiton |
-|       data        | Directory | Contains the saved master data and regression trained model |
+|       data        | Directory | Contains the saved master data and regression model |
 |        src        | Directory | Contains the main library source code |
 |       test        | Directory | Contains the main library test scripts| 
 
@@ -80,8 +77,8 @@ This is a demo/assignment application, because of time constrainte it contains t
 - Windows 11
 - Ubuntu-22.04 in the Windows 11 WSL2 environment
 - Docker service
-- Python 3.10.x
-- Pip 22.x.y
+- Python 3.10.x (development only)
+- Pip 22.x.y (development only)
 - Optional Nvidia GPU graphic card
 - Optionally Nvidia prerequisites, setup procedure may be found [here](https://developer.nvidia.com/cuda-downloads) 
 - Optionally Nvidia docker support procedure may be found [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
@@ -114,15 +111,26 @@ cd assignment
 ```
 - Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
 - Stop the docker image by issuing Ctrl+C in the console
+
 ### Experimentation in the browser Jupyter notebook
 - Import the API module
-```commandline
+```python
 import importlib
 import museums
-import matplotlib.pyplot as plt
-importlib.reload(museums)
+# This is required for development purpose to ensure that the library is reloaded by Jupyter when the code cell is ran
+importlib.reload(museums)    
 ```
-- Download the data
-```commandline
+- Download the data from Wikipedia [Museums page](https://en.wikipedia.org/wiki/List_of_most_visited_museums) and 
+[Cities page](https://en.wikipedia.org/wiki/List_of_largest_cities), some data customization is specified in the museums 
+module for: 1. Missing populations (**custom_population** argument) and (2. ) 
+```python
+museums.download_data(custom_locations = True, custom_population = True)
+```
+- Create master
+```python
+museums.create_master_data(True, True)
+```
 
-```
+### API reference - Data management
+
+### API reference - Model management
