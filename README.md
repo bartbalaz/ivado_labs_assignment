@@ -109,10 +109,10 @@ cd assignment
 ```commandline
 ./docker_start.sh
 ```
-- Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
 - Stop the docker image by issuing Ctrl+C in the console
 
 ### Experimentation in the browser Jupyter notebook
+- Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
 - Import the API module
 ```python
 import importlib
@@ -121,14 +121,14 @@ import museums
 importlib.reload(museums)    
 ```
 - Download the data from Wikipedia [Museums page](https://en.wikipedia.org/wiki/List_of_most_visited_museums) and 
-[Cities page](https://en.wikipedia.org/wiki/List_of_largest_cities), some data customization is specified in the museums 
-module for: 1. Missing populations (**custom_population** argument) and (2. ) 
+[Cities page](https://en.wikipedia.org/wiki/List_of_largest_cities).   
 ```python
-museums.download_data(custom_locations = True, custom_population = True)
+museums.download_data()
 ```
-- Create master
+- Create master, some data customization is specified in the museums module for: 1. Missing populations 
+- (**custom_population**) and 2. Locations naming adjustments (**custom_population**)
 ```python
-museums.create_master_data(True, True)
+museums.create_master_data(custom_locations = True, custom_population = True)
 ```
 
 ### API reference - Data management
