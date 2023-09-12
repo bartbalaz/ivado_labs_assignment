@@ -79,7 +79,7 @@ This is a demo/assignment application, because of time constrainte it contains t
 - Docker service
 - Python 3.10.x (development only)
 - Pip 22.x.y (development only)
-- Optional Nvidia GPU graphic card
+- Optional Nvidia GPU graphic card (used for this assignment: NVIDIA GeForce GTX 1660 Ti)
 - Optionally Nvidia prerequisites, setup procedure may be found [here](https://developer.nvidia.com/cuda-downloads) 
 - Optionally Nvidia docker support procedure may be found [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
@@ -121,15 +121,25 @@ import museums
 importlib.reload(museums)    
 ```
 - Download the data from Wikipedia [Museums page](https://en.wikipedia.org/wiki/List_of_most_visited_museums) and 
-[Cities page](https://en.wikipedia.org/wiki/List_of_largest_cities).   
+[Cities page](https://en.wikipedia.org/wiki/List_of_largest_cities). Optionally you may want to print the downloaded data.
 ```python
 museums.download_data()
+museums.print_museum_data()
+museums.print_city_data()
 ```
-- Create master, some data customization is specified in the museums module for: 1. Missing populations 
-- (**custom_population**) and 2. Locations naming adjustments (**custom_population**)
+- Create master that will serve as the model input, some data customization is specified in the museums module for: 1. Missing populations 
+(**custom_locations**) and 2. Locations naming adjustments (**custom_population**). The custom location and population may adjusted by modifying the
+**museums.location_overrides** and **museums.missing_city_populations** member variables (viewed using 
+**print_missing_city_populations()** and **print_location_overrides()** methods).
 ```python
 museums.create_master_data(custom_locations = True, custom_population = True)
 ```
+- Verify master data, this steps generates a  
+```python
+museums.verify_master_data()
+museums.print_master_data_issues()
+```
+
 
 ### API reference - Data management
 
