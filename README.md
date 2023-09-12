@@ -29,11 +29,14 @@ The figure below depicts the deployment layout.
 Has the following purposes:
 - **Development platform**: While developing the solution a Linux Ubuntu-22.04 (WSL) is used as the development platform. 
 It hosts the IDE along with all the necessary environment, tools and libraries for image creation, easy execution and testing  
-- **Execution platform**: for the target image, providing GPU hardware, Docker server, Docker registry (unless a registry service is used)
-File server for content peristency
+- **Execution platform**: for the target image, providing GPU hardware, Docker server, Docker registry (unless a registry service is used),
+file server for content peristency.
   
 ### Wikipedia server
 Acts as the data source, data is retrieved using the [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page) 
+
+### GitHub server
+Used for project code and data persistency and sharing.
 
 ### Docker
 Provides the execution environment, namely the container based on Ubuntu-22.04 contains all the required Python end Nvidia components necessary for executing the target image.
@@ -104,7 +107,7 @@ cd assignment
 ```commandline
 ./start.sh
 ```
-- Buld the Docker image
+- Build the Docker image
 ```commandline
 ./docker_build.sh
 ```
