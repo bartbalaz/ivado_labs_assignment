@@ -71,13 +71,13 @@ This is a demo/assignment application, because of time constrainte it contains t
 - Only the Ubuntu-22.04 on Windows 11 WSL2 with Nvidia GPU support configuration has been tested, other configuration will require deployment adjustments
 
 ## Source code structure
-- __src/museums.py__: Contains the main api module that allows to access all the feature of the application
-- __src/components/data.py__: Contains the implementation of the data extraction and basic data preparation functionalities including the persistancy
-- __src/components/model.py__: Contains the implementation of the linear regression model
+- __src/museums.py__: Main api module that allows to access all the feature of the application
+- __src/components/data.py__: Implementation of the data extraction and basic data preparation functionalities including the persistancy
+- __src/components/model.py__: Implementation of the linear regression model
 
 ## Prerequisites
 - Intel 64bit platform
-- Windows 11 host
+- Windows 11
 - Ubuntu-22.04 in the Windows 11 WSL2 environment
 - Docker service
 - Python 3.10.x
@@ -87,7 +87,7 @@ This is a demo/assignment application, because of time constrainte it contains t
 - Optionally Nvidia docker support procedure may be found [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 ## Workflows
-### Development
+### Launch
 - Clone the [repository](https://github.com/bartbalaz/ivado_labs_assignment) to __assignment__ folder
 ```commandline
 git clone git@github.com:bartbalaz/ivado_labs_assignment.git assignemnt
@@ -100,7 +100,7 @@ cd assignment
 ```commandline
 ./test.sh
 ```
-- Optional: Start Jupyter notebook locally
+- Optional: Start Jupyter notebook locally, Note you have to stop the Jupyter notebook before starting the Docker image below
 ```commandline
 ./start.sh
 ```
@@ -112,5 +112,17 @@ cd assignment
 ```commandline
 ./docker_start.sh
 ```
+- Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
+- Stop the docker image by issuing Ctrl+C in the console
+### Experimentation in the browser Jupyter notebook
+- Import the API module
+```commandline
+import importlib
+import museums
+import matplotlib.pyplot as plt
+importlib.reload(museums)
+```
+- Download the data
+```commandline
 
-
+```
