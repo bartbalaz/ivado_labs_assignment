@@ -1,9 +1,9 @@
-from typing import Optional, Tuple, List, Dict
-from pandas import DataFrame, read_html, read_csv
+from typing import List
+from pandas import DataFrame
 import torch
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler
 
 class InvaidEpochs(Exception):
     pass
