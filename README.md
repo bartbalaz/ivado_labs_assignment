@@ -72,6 +72,9 @@ This is a demo/assignment application, because of time constrainte it contains t
 will require deployment adjustments.
 - The current implementation and procedure allows only for a simple single user peristance and sharing, the presented 
 scheme would need to be enhanced to allow contributions from multiple team members.
+- Inefficient Docker image, the current image is 'naively' built from scratch on top of an Ubuntu-22.04 image. This 
+process should be refined by: selecting a potentially slimmer base image and/or use layers to avoid rebuilding the 
+while image because of missing trivial dependencies.
 
 ## Source code structure
 - __src/museums.py__: Main api module that allows to access all the feature of the application
