@@ -56,7 +56,6 @@ The target image:
 | requirements.txtt |   File    | Python dependencies requirements                     |
 |     start.sh      |   File    | Jupyter notebook startup script, command line for development purpose or Docker image entry point | 
 |      test.sh      |   File    | Scrpt launching the unit tests |
-|  jupyter_config   | Directory | Contains the Jupyter notebook configuraiton |
 |       data        | Directory | Contains the saved master data and regression model |
 |        src        | Directory | Contains the main library source code |
 |       test        | Directory | Contains the main library test scripts| 
