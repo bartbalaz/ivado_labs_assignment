@@ -118,9 +118,9 @@ cd assignment
 ```commandline
 ./docker_start.sh
 ```
-- Once done working (done with **Experimentation**), stop the docker image by issuing __'Ctrl+C'__, then __'y'__, in 
+- Once done working (finished **Experimentation**), stop the docker image by issuing __'Ctrl+C'__, then __'y'__, in 
 the console.
-- The work may be persisted and shared with other by pushing the changes to the github repository (see limitations above).
+- Work may be persisted and shared with others by pushing the changes to the GitHub repository (see limitations above).
 ```commandline
 git add .
 git commit -m "<some comment>"
