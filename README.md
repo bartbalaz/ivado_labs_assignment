@@ -16,9 +16,20 @@ You will be evaluated not only on how your code works but also on the rationale 
 # Solution
 
 ## General idea
-As per requirements a small library is developed. The library allows to gather and prepare the required data for further analysis. The analysis consists in training an ML model 
-to perform a linear regression allowing to predict the museum visits based on the size of the city the museum is located in. This library is packaged in a docker image that exposes 
-a Jupyter notebook. The notebook allows to invoke the different functions from the library.   
+As per requirements a small library is developed. The library allows to gather and prepare the required data for further 
+analysis. The analysis consists in training an ML model to perform a linear regression allowing to predict the museum 
+visits based on the size of the city the museum is located in. The execution environment (Python3.10.x, along with 
+all the necessary libraries) are packaged in a Docker image, this image mounts a folder (local or remote) that clones this GitHub 
+repository and contains the library along with the Jupyter notebook. GitHub is used to persist and share the Jupyter 
+notebook, the master data and the trained model.
+
+### Why this approach?
+At the time of the implementation I'm facing the following unknowns:
+- Detailed customer workflow: How this implementation will be used, by how many people, part of what bigger scheme?
+- Detailed customer deployment: K8s vs just a Docker/DockerCompose on physical or virtual host, if any, which public cloud 
+provider AWS, GCP, Azure would be considered? Who's infrastructure (customer or ours) would be considered etc. etc.?
+Therefore, the chosen approach provides the most flexibility and the least constraints in terms of customer side requirements. 
+It may be adjusted easily to fit into any set of constraints.  
 
 ## High level deployment layout
 The figure below depicts the deployment layout.
