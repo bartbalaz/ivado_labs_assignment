@@ -26,12 +26,12 @@ echo JUPYTER_CONFIG_PATH: "$JUPYTER_CONFIG_PATH"
 echo JUPYTER_RUNTIME_DIR: "$JUPYTER_RUNTIME_DIR"
 
 if [ ! -d "$DATA_DIR" ]; then
-  echo "Creating data directory"
+  echo "Creating data directory at $DATA_DIR"
   mkdir $DATA_DIR
 fi
 
 if [ ! -d "$JUPYTER_CONFIG_DIR" ]; then
-  echo "Creating jupyter configuration directory"
+  echo "Creating jupyter configuration directory at $JUPYTER_CONFIG_DIR"
   mkdir $JUPYTER_CONFIG_DIR
   jupyter lab  --generate-config
 fi
