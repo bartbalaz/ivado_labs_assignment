@@ -25,7 +25,8 @@ class LinearRegression(torch.nn.Module):
         self.linear_layer = torch.nn.Linear(in_features=1, out_features=1, device=device, dtype=torch.float64)
         self.to(device)
         self.loss_fn = torch.nn.L1Loss()
-        self.optimizer = torch.optim.SGD(params=self.parameters(), lr=lr)
+        self.lr = lr
+        self.optimizer = torch.optim.SGD(params=self.parameters(), lr=self.lr)
         self.scaler_x, self.scaler_y = MinMaxScaler(), MinMaxScaler()
 
 
@@ -33,9 +34,9 @@ class LinearRegression(torch.nn.Module):
         return self.linear_layer(x)
 
 
-    def train_model(self, x_in: List[int], y_in: List[int], epochs: int, test_ratio: int):
+    def train_model(self, x_in: List[int], y_in: List[int], threshold: int, epochs: int, test_ratio: int):
         self.to(device)
-        self.training_params = f's: {len(x_in)}, e: {epochs}, r:{test_ratio}%'
+        self.training_params = f't: {threshold}, s: {len(x_in)}, e: {epochs}, r: {test_ratio}%, lr: {self.lr}'
         print(f'Parameters: {self.training_params}')
 
         if epochs <= 0:

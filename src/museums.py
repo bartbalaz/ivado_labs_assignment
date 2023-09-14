@@ -157,7 +157,7 @@ def train_model(threshold: int = 2000000, epochs: int = 20000, test_ratio: int =
     X = data_set['population'].values.tolist()
     Y = data_set['visitors'].values.tolist()
 
-    nn_model.train_model(X,Y, epochs, test_ratio)
+    nn_model.train_model(X,Y, threshold, epochs, test_ratio)
     print('\nDone')
 
 
