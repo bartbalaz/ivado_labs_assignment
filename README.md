@@ -21,8 +21,8 @@ analysis. The analysis consists in training an ML model to perform a linear regr
 visits based on the size of the city the museum is located in. The execution environment (Python3.10.x, along with 
 all the necessary libraries and notebooks) are packaged in a Docker image, this image mounts a folder (local or remote) that clones this GitHub 
 repository and contains the library along with the Jupyter notebook. GitHub is used to persist and share the Jupyter 
-notebook, the master data and the trained model. Optionally the docker image may be executed without mounting any 
-external folders. That way the image will create a self-contained container the data will be persisted only while the 
+notebook, the master data and the trained model. The Docker image may be executed without mounting any 
+external folders. That way the image will create a self-contained container, the data will be persisted only while the 
 corresponding container is not removed from the system (i.e. using __docker rm__ command).
 
 ### Why this approach?
@@ -132,7 +132,7 @@ cd assignment
 ```
 - Or start the image in isolation (i.e. __self-contained__ mode)
 ```commandline
-./docker_start --isolation
+./docker_start.sh --isolation
 ```
 - Once done working (finished **Experimentation**), stop the docker image by issuing __'Ctrl+C'__, then __'y'__, in 
 the console.
