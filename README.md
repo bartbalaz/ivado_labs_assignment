@@ -55,8 +55,9 @@ Used for project code and data persistency and sharing.
 Provides the execution environment, namely the container based on Ubuntu-22.04 contains all the required Python end Nvidia components necessary for executing the target image.
 The target image:
 - Exposes the TCP port 8888
-- Maps the host file system for persistency, Docke image internal __/run__ folder to __<cloned directory>__
 - Provides access to the GPU hardware
+- Optionally mounts the host file system for persistency, Docker image internal __/run__ folder to __<cloned directory>__
+
 
 ## Repository content
 |    File/folder    |   Type    | Description                                          |                                          
