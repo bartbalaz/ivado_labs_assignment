@@ -72,6 +72,7 @@ The target image:
 |       data        | Directory | Contains the saved master data and regression model |
 |        src        | Directory | Contains the main library source code |
 |       test        | Directory | Contains the main library test scripts| 
+|       docs        | Directory | Contains additional documentation files |
 
 ## Limitations of the demonstration system
 This is a demo/assignment application, because of time constrainte it contains the following constraints:
