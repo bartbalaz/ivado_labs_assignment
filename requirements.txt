@@ -7,7 +7,6 @@ numpy
 matplotlib
 jupyter
 pyqt5
-wikipedia-api
 lxml
 beautifulsoup4
 html5lib
