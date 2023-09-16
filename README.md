@@ -19,19 +19,24 @@ You will be evaluated not only on how your code works but also on the rationale 
 As per requirements a small library is developed. The library allows to gather and prepare the required data for further 
 analysis. The analysis consists in training an ML model to perform a linear regression allowing to predict the museum 
 visits based on the size of the city the museum is located in. The execution environment (Python3.10.x, along with 
-all the necessary libraries and notebooks) are packaged in a Docker image, this image mounts a folder (local or remote) that clones this GitHub 
-repository and contains the library along with the Jupyter notebook. GitHub is used to persist and share the Jupyter 
-notebook, the master data and the trained model. The Docker image may be executed without mounting any 
-external folders. That way the image will create a self-contained container, the data will be persisted only while the 
-corresponding container is not removed from the system (i.e. using __docker rm__ command).
+all the necessary libraries and notebooks) are packaged in a Docker image, this image mounts a folder (local or remote) 
+that clones this GitHub repository and contains the library along with the Jupyter notebook. GitHub is used to persist 
+and share the Jupyter notebook, the master data and the trained model. The Docker image may be executed without mounting any 
+external folders. In that configuration the image creates an entirely self-contained container. Namely, the original 
+input data set along with the trained model are stored in the image while any changes in the data are be persisted only 
+while the corresponding container is not removed from the system (i.e. using __docker rm__ command).
 
 ### Why this approach?
-At the time of the implementation I'm facing the following unknowns:
+The nature of the data allows to assume a relatively small set with very limited evolution potential. This enables us 
+to store the entire data set in the Docker image.
+Similarly, the linear regression requirement needs a very small amount of parameters hence also allowing to be embedded 
+into the Docker image. 
+Additionally, at the time of the implementation I'm facing the following unknowns:
 - Detailed customer workflow: How this implementation will be used, by how many people, part of what bigger scheme?
 - Detailed customer deployment: K8s vs just a Docker/DockerCompose on physical or virtual host, if any, which public cloud 
 provider AWS, GCP, Azure would be considered? Who's infrastructure (customer or ours) would be considered etc. etc.?
 Therefore, the chosen approach provides the most flexibility and the least constraints in terms of customer side requirements. 
-It may be adjusted easily to fit into any set of constraints.  
+It may be adjusted easily to fit into any set of additional constraints.  
 
 ## High level deployment layout
 The figure below depicts the deployment layout.
