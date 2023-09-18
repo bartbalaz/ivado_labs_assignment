@@ -33,8 +33,8 @@ indexing while it may be stored entirely in memory.
 1. Similarly, the linear regression requirement needs a very small amount of parameters hence also allowing to be embedded 
 into the Docker image. 
 1. Additionally, at the time of the implementation I'm facing the following unknowns:
-- Detailed customer workflow: How this implementation will be used, by how many people, part of what bigger scheme?
-- Detailed customer deployment: K8s vs just a Docker/DockerCompose on physical or virtual host, if any, which public cloud 
+   - Detailed customer workflow: How this implementation will be used, by how many people, part of what bigger scheme?
+   - Detailed customer deployment: K8s vs just a Docker/DockerCompose on physical or virtual host, if any, which public cloud 
 provider AWS, GCP, Azure would be considered? Who's infrastructure (customer or ours) would be considered etc. etc.?
 
 Therefore, the chosen approach provides the most flexibility and the least constraints in terms of customer side requirements. 
