@@ -179,6 +179,7 @@ museums.print_city_data()
 - Create master data set that will serve as the model training input, some data customization is specified in the museums module for: 
   1. Missing populations (**custom_locations**)
   1. Locations naming adjustments (**custom_population**). 
+
 The custom location and population may be adjusted by modifying the **museums.location_overrides** and 
 **museums.missing_city_populations** member variables (viewed using **museums.print_missing_city_populations()** and 
 **museums.print_location_overrides()** methods).
