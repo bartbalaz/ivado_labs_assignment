@@ -123,11 +123,15 @@ git clone git@github.com:bartbalaz/ivado_labs_assignment.git assignemnt
 ```commandline
 cd assignment
 ```
-- Optionl: Run the unit tests
+- Install the requirements
+```commandline
+pip install -r requirements.txt
+```
+- Run the unit tests
 ```commandline
 ./test.sh
 ```
-- Optional: Start Jupyter notebook locally, Note you have to stop the Jupyter notebook before starting the Docker image below
+- Start Jupyter notebook locally, Note you have to stop the Jupyter notebook before starting the Docker image below
 ```commandline
 ./start.sh
 ```
@@ -135,11 +139,11 @@ cd assignment
 ```commandline
 ./docker_build.sh
 ```
-- Start the docker image
+- Start the Docker image
 ```commandline
 ./docker_start.sh
 ```
-- Or start the image in isolation (i.e. __self-contained__ mode)
+- Or start the Docker image in isolation (i.e. __self-contained__ mode)
 ```commandline
 ./docker_start.sh --isolation
 ```
