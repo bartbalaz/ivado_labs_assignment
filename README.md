@@ -185,7 +185,7 @@ museums.create_master_data(custom_locations = True, custom_population = True)
 museums.verify_master_data()
 museums.print_master_data_issues()
 ```
-- Once satisfied with the data, the data may be saved and later loaded.
+- Once satisfied with the data, the data may be saved and loaded later.
 ```python
 museums.save_master_data() # For saving
 musemms.load_master_data() # For loading
