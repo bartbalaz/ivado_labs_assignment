@@ -157,7 +157,8 @@ git commit -m "<some comment>"
 git push orign main
 ```
 
-### Experimentation in the browser with Jupyter notebook, while either Jupyter is started locally or through the Docker image
+### Experimentation in the browser with Jupyter notebook 
+- This section requires that the Jupyter notebook is started locally or through the Docker image (see above)
 - Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
 - Import the API module
 ```python
