@@ -167,7 +167,10 @@ import museums
 importlib.reload(museums)    
 ```
 - Download the data from Wikipedia [Museums page](https://en.wikipedia.org/wiki/List_of_most_visited_museums) and 
-[Cities page](https://en.wikipedia.org/wiki/List_of_largest_cities). Optionally you may want to print the downloaded data.
+[Cities page](https://en.wikipedia.org/wiki/List_of_largest_cities). Optionally, you may want to print the downloaded data. 
+Please note that not all the required cities are listed on the [Cities page](https://en.wikipedia.org/wiki/List_of_largest_cities). 
+Therefore, a module variable **museums.missing_city_populations** (see below) allows to add any missing cities. This variable it prefilled
+with the necessary default values.
 ```python
 museums.download_data()
 museums.print_museum_data()
