@@ -5,7 +5,7 @@ import os
 from src.components import data, model
 import importlib
 
-# To force reload of data and model components upon a reload of this module
+# To force reload of data and model components upon a reload of this module, useful for development purposes
 importlib.reload(data)
 importlib.reload(model)
 
@@ -200,11 +200,11 @@ def load_model(model_file: str = MODEL_FILE):
     f.close()
     print('\nDone')
 
-
+# For development purposes
 if __name__ == '__main__':
     download_data()
     create_master_data(True, True)
     verify_master_data()
     create_model()
-    train_model(epochs=1000, test_ratio=10)
+    train_model(epochs=10000, test_ratio=10)
     evaluate([1000000, 2000000])

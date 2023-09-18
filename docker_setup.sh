@@ -14,7 +14,6 @@ cp /var/cuda-repo-wsl-ubuntu-12-2-local/cuda-*-keyring.gpg /usr/share/keyrings/
 apt update
 apt -y install cuda
 
-
 # Install python 3.10
 add-apt-repository ppa:deadsnakes/ppa -y
 apt update

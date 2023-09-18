@@ -14,18 +14,28 @@ class InvalidContentFromWikipedia(Exception):
 
 def _download_table(page: str, section: int) -> DataFrame:
     print(f'Getting page {page}, section {section} from Wikipedia')
+
+    # Query Wikipedia
     print('1 Downloading')
     response_html = requests.get(
         f'https://en.wikipedia.org/w/api.php?format=json&page={page}&action=parse&prop=text&section={section}')
+    # Raise an exception upon HTTP/IP layer failure
     response_html.raise_for_status()
 
+    # Translate response into a dict
     print('2 Extracting content')
     response_json = json.loads(response_html.text)
+    # Find the "parse.text.*" element if it exists
     response_content = response_json.get('parse', {}).get('text', {}).get('*', "")
 
     print('3 Parsing content')
+    # Parse the HTML content
     response_soup = BeautifulSoup(response_content, 'html.parser')
-    response_df = read_html(io.StringIO(str(response_soup.div.table)))[0] if response_soup is not None else None
+    # Load the HTML DOM content of <div><table> into io.StringIO()
+    if response_soup and response_soup.div and response_soup.div.table:
+        response_df = read_html(io.StringIO(str(response_soup.div.table)))[0]
+    else:
+        response_df = None
 
     if response_df is None:
         raise InvalidContentFromWikipedia
@@ -36,17 +46,24 @@ def _download_table(page: str, section: int) -> DataFrame:
 def _get_location_values(location: str, location_overrides: Dict) -> Tuple[str, str]:
     location_city, location_country = location_overrides.get(location, (None, None))
 
+    # If the location value is not overriden (cannot be found in location_overrides)
     if not location_city:
+
+        # Split the availabel value using commas
         location_list = location.split(',')
 
+        # If the list is too small add a None
         while len(location_list) < 2:
             location_list.append(None)
 
+        # If the list is too long trim to 2 elements
         while len(location_list) > 2:
             del location_list[-1]
 
+        # Create a tuple
         location_city, location_country = (tuple(location_list))
 
+    # Return the tuple of empty strings
     return (location_city if location_city else '', location_country if location_country else '')
 
 
@@ -58,14 +75,22 @@ def _get_population(city_name: str, city_data: DataFrame, missing_city_populatio
 # API methods
 
 def download_data() -> Tuple[DataFrame, DataFrame]:
+    # Museum data
     museum_data = _download_table('List_of_most-visited_museums', 1)
+    # Add our header
     museum_data.columns = ['name', 'location', 'visitors']
 
+    # City data
     city_data = _download_table('List_of_largest_cities', 5)
+    # Remove unnecessary columns
     city_data = city_data.drop(city_data.iloc[:, 3:13], axis=1)
+    # Remove parsed header
     city_data = city_data.drop(city_data.index[0])
+    # Add our header
     city_data.columns = ['city', 'country', 'population']
+    # Force our types
     city_data = city_data.astype({'city': str, 'country': str, 'population': int})
+    # Ensure the missing values are blank strings
     city_data = city_data.fillna(' ')
 
     return museum_data, city_data

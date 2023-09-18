@@ -2,8 +2,8 @@
 
 IMAGE_NAME=ivado_labs_assignment
 
-# If the docker is started in isolation mode no folders are mounted and the container is kept (i.e. no "--rm" option)
-# after finishing the execution
+# If the docker is started in isolation mode (self contained) no folders are mounted and the container is
+# kept (i.e. no "--rm" option) after finishing the execution
 if [ "$1" == "--isolation" ] || [ "$1" == "-i" ]; then
     # See if a container has already been crated in the past
     CONTAINER_ID=$(docker container ps -a --filter "ancestor=$IMAGE_NAME" --filter "status=exited" -q)
@@ -17,6 +17,7 @@ if [ "$1" == "--isolation" ] || [ "$1" == "-i" ]; then
       docker run -it -p 8888:8888 --gpus=all $IMAGE_NAME
     fi
 else
+    # Start the docker and mount the cloned directory, make sure the container is deleted once it is stopped ("-rm")
     docker run --rm -it -p 8888:8888 --gpus=all -v $(pwd):/run ivado_labs_assignment
 fi
 

@@ -8,10 +8,10 @@ from sklearn.preprocessing import MinMaxScaler
 class InvaidEpochs(Exception):
     pass
 
-# Set a seed for consistent
+# Set a seed for consistency of the results
 RANDOM_SEED = 89
 
-# Detect device type
+# Detect and use GPU, use CPU otherwise
 dtype = torch.float
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -22,14 +22,20 @@ class LinearRegression(torch.nn.Module):
         super().__init__()
         torch.manual_seed(RANDOM_SEED)
 
+        # Add a linear layer
         self.linear_layer = torch.nn.Linear(in_features=1, out_features=1, device=device, dtype=torch.float64)
+        # Set the detected device
         self.to(device)
+        # Set the L1Loss loss function
         self.loss_fn = torch.nn.L1Loss()
+        # Set the learning rate
         self.lr = lr
+        # Set the optimizer function
         self.optimizer = torch.optim.SGD(params=self.parameters(), lr=self.lr)
+        # Create the scaler objects
         self.scaler_x, self.scaler_y = MinMaxScaler(), MinMaxScaler()
 
-
+    # Evaluation method
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.linear_layer(x)
 
@@ -42,12 +48,14 @@ class LinearRegression(torch.nn.Module):
         if epochs <= 0:
             raise InvaidEpochs
 
+        # Fit and scale the input and output vectors
         x = torch.FloatTensor(x_in).unsqueeze(dim=1)
         y = torch.FloatTensor(y_in).unsqueeze(dim=1)
 
         x = torch.from_numpy(self.scaler_x.fit_transform(x))
         y = torch.from_numpy(self.scaler_y.fit_transform(y))
 
+        # Select a random test sample, if required
         if test_ratio > 0:
             self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size= float(test_ratio / 100),
                                                                                     random_state=RANDOM_SEED)
@@ -63,16 +71,17 @@ class LinearRegression(torch.nn.Module):
 
         self.y_pred = None
 
+        # Create a dataframe for recording the training run
         self.training_run = DataFrame(data={'epoch': [], 'training_loss': [], 'test_loss': [] })
 
         for epoch in range(epochs):
-            ### Training
+            #Set the model in training mode
             self.train()
 
             # Forward pass
             y_pred = self(self.x_train)
 
-            # Loss
+            # Calculate the loss
             loss = self.loss_fn(y_pred, self.y_train)
 
             # Zero grad optimizer
@@ -81,11 +90,11 @@ class LinearRegression(torch.nn.Module):
             # Loss backward
             loss.backward()
 
-            # Step the optimizer
+            # Step the optimizer, adjust the weights
             self.optimizer.step()
 
             if test_ratio > 0:
-                ### Testing
+                # Test the model
                 self.eval()  # put the model in evaluation mode for testing (inference)
                 # Forward pass
                 with torch.inference_mode():
@@ -94,6 +103,7 @@ class LinearRegression(torch.nn.Module):
                     # Calculate the loss
                     test_loss = self.loss_fn(self.y_pred, self.y_test)
 
+            # Printing and recording of the training run
             if epoch % (epochs / 10) == 0:
                 if test_ratio > 0:
                     test_loss = test_loss.cpu()
@@ -103,13 +113,13 @@ class LinearRegression(torch.nn.Module):
                 print(f"Epoch: {epoch} | Train loss: {loss} | Test loss: {test_loss} ")
                 self.training_run.loc[len(self.training_run)] = [ epoch, loss.cpu().detach().numpy(), test_loss ]
 
-        # Sweep test
+        # Sweep test through the full range of values
         self.x_sweep = torch.from_numpy(self.scaler_x.transform(torch.FloatTensor(range(min(x_in), max(x_in), 1000)).unsqueeze(dim=1))).to(device)
         self.eval()
         with torch.inference_mode():
             self.y_sweep = self(self.x_sweep)
 
-        # De-scale after training
+        # De-scale after training, save all the parameters
         self.x_sweep = self.scaler_x.inverse_transform(self.x_sweep.cpu())
         self.y_sweep = self.scaler_y.inverse_transform(self.y_sweep.cpu())
 
@@ -145,12 +155,16 @@ class LinearRegression(torch.nn.Module):
         print(self.training_run.to_markdown())
 
     def evaluate(self, vector: List[int]) -> List[int]:
+        # Set model to the current device (it may have been saved on a different setup)
         self.to(device)
+        # Prepare the input vector
         vector = torch.from_numpy(self.scaler_x.transform(torch.FloatTensor(vector).unsqueeze(dim=1))).to(device)
+        # Evaluate
         self.eval()
         with torch.inference_mode():
             result = self(vector).cpu()
 
+        # Prepare the output vector
         r = self.scaler_y.inverse_transform(result).squeeze().tolist()
 
         return r
