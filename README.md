@@ -27,14 +27,16 @@ input data set along with the trained model are stored in the image while any ch
 while the corresponding container is not removed from the system (i.e. using __docker rm__ command).
 
 ### Why this approach?
-The nature of the data allows to assume a relatively small set with very limited evolution potential. This enables us 
-to store the entire data set in the Docker image.
-Similarly, the linear regression requirement needs a very small amount of parameters hence also allowing to be embedded 
+1. The nature of the data allows to assume a relatively small set with very limited evolution potential. This enables us 
+to store the entire data set in the Docker image. Furthermore, the data set is small enough not to require data 
+indexing while it may be stored entirely in memory.
+1. Similarly, the linear regression requirement needs a very small amount of parameters hence also allowing to be embedded 
 into the Docker image. 
-Additionally, at the time of the implementation I'm facing the following unknowns:
+1. Additionally, at the time of the implementation I'm facing the following unknowns:
 - Detailed customer workflow: How this implementation will be used, by how many people, part of what bigger scheme?
 - Detailed customer deployment: K8s vs just a Docker/DockerCompose on physical or virtual host, if any, which public cloud 
 provider AWS, GCP, Azure would be considered? Who's infrastructure (customer or ours) would be considered etc. etc.?
+
 Therefore, the chosen approach provides the most flexibility and the least constraints in terms of customer side requirements. 
 It may be adjusted easily to fit into any set of additional constraints.  
 
