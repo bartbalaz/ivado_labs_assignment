@@ -190,8 +190,8 @@ museums.print_master_data_issues()
 museums.save_master_data() # For saving
 musemms.load_master_data() # For loading
 ```
-- When the master data is ready the model trainng may take place, create and train model. The parameters are
-**lr**: learning rate, **threshold**: minimum museum visits to be part of the training set, **epochs**: The number of 
+- When the master data is ready the model training may take place, create and train model. The parameters are
+**lr**: learning rate, **threshold**: minimum museum visits value to include the data point in the training set, **epochs**: The number of 
 training iterations, **test_ratio**: The percentage proportion of the datapoints to be used as the test data set
 ```python
 museums.create_model(lr = 0.001)
