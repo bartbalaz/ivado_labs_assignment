@@ -111,7 +111,7 @@ while image because of missing trivial dependencies.
 - Pip 22.x.y (development only)
 - Optional Nvidia GPU graphic card (used for this assignment: NVIDIA GeForce GTX 1660 Ti)
 - Optional Nvidia prerequisites, setup procedure may be found [here](https://developer.nvidia.com/cuda-downloads) 
-- Optional Nvidia docker support procedure may be found [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+- Optional Nvidia docker support, setup procedure may be found [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 ## Workflows
 ### Launch
