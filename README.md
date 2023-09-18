@@ -131,7 +131,7 @@ pip install -r requirements.txt
 ```commandline
 ./test.sh
 ```
-- Start Jupyter notebook locally, Note you have to stop the Jupyter notebook before starting the Docker image below
+- Start Jupyter notebook locally, Note you have to stop the Jupyter notebook before starting the Docker image (see below)
 ```commandline
 ./start.sh
 ```
@@ -139,7 +139,7 @@ pip install -r requirements.txt
 ```commandline
 ./docker_build.sh
 ```
-- Start the Docker image
+- Start the Docker image, make sure that the notebook is not running locally (see above)
 ```commandline
 ./docker_start.sh
 ```
@@ -157,7 +157,7 @@ git commit -m "<some comment>"
 git push orign main
 ```
 
-### Experimentation in the browser Jupyter notebook
+### Experimentation in the browser with Jupyter notebook, while either Jupyter is started locally or through the Docker image
 - Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
 - Import the API module
 ```python
