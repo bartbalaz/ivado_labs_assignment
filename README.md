@@ -114,7 +114,7 @@ while image because of missing trivial dependencies.
 - Optional Nvidia docker support, setup procedure may be found [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 ## Workflows
-### Launch
+### Develop, Build and Launch
 - Clone the [repository](https://github.com/bartbalaz/ivado_labs_assignment) to __assignment__ folder
 ```commandline
 git clone git@github.com:bartbalaz/ivado_labs_assignment.git assignemnt
@@ -147,7 +147,7 @@ pip install -r requirements.txt
 ```commandline
 ./docker_start.sh --isolation
 ```
-- Once done working (finished **Experimentation**), stop the docker image by issuing __'Ctrl+C'__, then __'y'__, in 
+- Once done working (finished **Experimenting**), stop the docker image by issuing __'Ctrl+C'__, then __'y'__, in 
 the console.
 - If not started in self-contained mode work may be persisted and shared with others by pushing the changes to the 
 GitHub repository (see limitations above).
@@ -157,7 +157,7 @@ git commit -m "<some comment>"
 git push orign main
 ```
 
-### Experimentation in the browser with Jupyter notebook 
+### Experiment with Jupyter notebook 
 - This section requires that the Jupyter notebook is started locally or through the Docker image (see above)
 - Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
 - Import the API module
