@@ -87,7 +87,7 @@ This is a demo/assignment application, because of time constrainte it contains t
 - The security considerations have been omitted: It is possible to inject malicious values through the API.
 - Model persistency is achieved using Python **pickle** library which is not secure.
 - The system has neither been designed nor tested for all the possible corner cases.
-- The unit test set only contains several test cases.
+- The unit test set only contains several examples test cases.
 - Comments are minimal.
 - Only the Ubuntu-22.04 on Windows 11 WSL2 with Nvidia GPU support configuration has been tested, other configuration 
 will require deployment adjustments.
@@ -95,7 +95,7 @@ will require deployment adjustments.
 scheme would need to be enhanced to allow contributions from multiple team members.
 - Inefficient Docker image, the current image is 'naively' built from scratch on top of an Ubuntu-22.04 image. This 
 process should be refined by: selecting a potentially slimmer base image and/or use layers to avoid rebuilding the 
-while image because of missing trivial dependencies.
+while image because of library or requirements update.
 
 ## Source code structure
 - __src/museums.py__: Main api module that allows to access all the feature of the application
