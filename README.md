@@ -84,10 +84,12 @@ The target image:
 
 ## Limitations of the demonstration system
 This is a demo/assignment application, because of time constrainte it contains the following constraints:
-- The security considerations have been omitted: It is possible to inject malicious values through the API.
+- The security considerations have been omitted: 
+  - It is possible to inject malicious values through the API.
+  - The access to the Jupyter Notebook is completely open
 - Model persistency is achieved using Python **pickle** library which is not secure.
 - The system has neither been designed nor tested for all the possible corner cases.
-- The unit test set only contains several examples test cases.
+- The unit test set only contains a few examples of test cases.
 - Comments are minimal.
 - Only the Ubuntu-22.04 on Windows 11 WSL2 with Nvidia GPU support configuration has been tested, other configuration 
 will require deployment adjustments.
@@ -96,6 +98,8 @@ scheme would need to be enhanced to allow contributions from multiple team membe
 - Inefficient Docker image, the current image is 'naively' built from scratch on top of an Ubuntu-22.04 image. This 
 process should be refined by: selecting a potentially slimmer base image and/or use layers to avoid rebuilding the 
 while image because of library or requirements update.
+- There are some user identity inconsistencies when using different access methods to the Jupyter notebook   
+(i.e. root user vs normal system user)
 
 ## Source code structure
 - __src/museums.py__: Main api module that allows to access all the feature of the application
@@ -197,6 +201,7 @@ museums.print_master_data_issues()
 museums.save_master_data() # For saving
 musemms.load_master_data() # For loading
 ```
+- The master data is stored in __museums.master_data__ module variable
 - When the master data is ready the model training may take place, create and train model. The parameters are
 **lr**: learning rate, **threshold**: minimum museum visits value to include the data point in the training set, **epochs**: The number of 
 training iterations, **test_ratio**: The percentage proportion of the datapoints to be used as the test data set
@@ -204,6 +209,7 @@ training iterations, **test_ratio**: The percentage proportion of the datapoints
 museums.create_model(lr = 0.001)
 museums.train_model(threshold=2000000, epochs: int = 20000, test_ratio=20)
 ```
+- The model is stored in __museums.nn_model__ variable
 - Once the training has been done it may be saved and loaded
 ```python
 museums.save_model() # For saving

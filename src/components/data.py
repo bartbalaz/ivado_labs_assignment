@@ -6,7 +6,6 @@ import json
 import io
 import re
 
-
 class InvalidContentFromWikipedia(Exception):
     pass
 
@@ -67,7 +66,7 @@ def _get_location_values(location: str, location_overrides: Dict) -> Tuple[str, 
     return (location_city if location_city else '', location_country if location_country else '')
 
 
-def _get_population(city_name: str, city_data: DataFrame, missing_city_populations: bool) -> int:
+def _get_population(city_name: str, city_data: DataFrame, missing_city_populations: Dict) -> int:
     val_df = city_data.query("city == @city_name")
     return val_df['population'].item() if not val_df.empty else missing_city_populations.get(city_name, 0)
 
