@@ -1,5 +1,5 @@
 #!/bin/bash
 
-#export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src:$(pwd)/test
+export TEST_PATH_ROOT=$(pwd)
 
-python -m unittest discover -s test
+python  -m unittest discover -q -s ./test

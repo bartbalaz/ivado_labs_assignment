@@ -1,9 +1,11 @@
 from typing import List
+import os
+import importlib
+
 import pickle
 from pandas import read_csv
-import os
+
 from src.components import data, model
-import importlib
 
 # To force reload of data and model components upon a reload of this module, useful for development purposes
 importlib.reload(data)
