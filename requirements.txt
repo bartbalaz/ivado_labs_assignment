@@ -1,6 +1,5 @@
-torch>=1.2.0
+torch
 scikit-learn
-torchvision
 torchsummary
 pandas
 numpy

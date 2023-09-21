@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Let's keep the image clean, let's create a temporary folder and use it for running this script
+mkdir /ivado_tmp
+cd /ivado_tmp
+
 # Install basic pre-requisites
 apt update
 apt -y install wget
@@ -14,15 +18,18 @@ cp /var/cuda-repo-wsl-ubuntu-12-2-local/cuda-*-keyring.gpg /usr/share/keyrings/
 apt update
 apt -y install cuda
 
-# Install python 3.10
+# Install python 3.10.x
 add-apt-repository ppa:deadsnakes/ppa -y
 apt update
 apt -y install python3.10
 apt -y install python3-pip
 
 # Install Python requirements
-pip install -r /run/requirements.txt
+pip install -r /ivado/requirements.txt
 
+# Lets go back to root folder and remove the temporary folder with all its content
+cd /
+rm -rf /ivado_tmp
 
 
 

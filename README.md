@@ -63,7 +63,7 @@ Provides the execution environment, namely the container based on Ubuntu-22.04 c
 The target image:
 - Exposes the TCP port 8888
 - Provides access to the GPU hardware
-- Optionally mounts the host file system for persistency, Docker image internal __/run__ folder to __<cloned directory>__
+- Optionally mounts the host file system for persistency, Docker image internal __/ivado__ folder to __<cloned directory>__
 
 
 ## Repository content

@@ -18,6 +18,6 @@ if [ "$1" == "--isolation" ] || [ "$1" == "-i" ]; then
     fi
 else
     # Start the docker and mount the cloned directory, make sure the container is deleted once it is stopped ("-rm")
-    docker run --rm -it -p 8888:8888 --gpus=all -v $(pwd):/run ivado_labs_assignment
+    docker run --rm -it -p 8888:8888 --gpus=all -v $(pwd):/ivado ivado_labs_assignment
 fi
 

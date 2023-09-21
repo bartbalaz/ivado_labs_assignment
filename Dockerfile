@@ -6,12 +6,12 @@ EXPOSE 8888/tcp
 # Create a run directory and copy the required files for setting up the image
 ADD docker_setup.sh requirements.txt start.sh Main.ipynb /run/
 # Add the python libraries
-ADD src /run/src/
+ADD src /ivado/src/
 # Add the existing data files
-ADD data /run/data
+ADD data /ivado/data
 
 # Configure the image
-RUN /run/docker_setup.sh
+RUN /ivado/docker_setup.sh
 
 # Jupyter notebook start script
-ENTRYPOINT /run/start.sh /run
+ENTRYPOINT /ivado/start.sh /run
