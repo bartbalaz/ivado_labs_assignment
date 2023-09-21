@@ -135,7 +135,7 @@ pip install -r requirements.txt
 ```commandline
 ./test.sh
 ```
-- Start Jupyter notebook locally, Note you have to stop the Jupyter notebook before starting the Docker image (see below)
+- Start Jupyter notebook locally, note that you have to stop the Jupyter notebook before starting the Docker image (see below)
 ```commandline
 ./start.sh
 ```
