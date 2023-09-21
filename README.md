@@ -163,7 +163,8 @@ git push orign main
 
 ### Experiment with Jupyter notebook 
 - This section requires that the Jupyter notebook is started locally or through the Docker image (see above)
-- Using a browser go to [http://localhost:8888/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
+- Using a browser go to [http://localhost:8080/lab/tree/Main.ipynb](http://localhost:8888/lab/tree/Main.ipynb)
+**NOTE: The port mapped by docker is 8080, not the value displayed while launching Jupyter!!**
 - Import the API module
 ```python
 import importlib
