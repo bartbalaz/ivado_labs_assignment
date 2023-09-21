@@ -14,10 +14,10 @@ if [ "$1" == "--isolation" ] || [ "$1" == "-i" ]; then
     else
       # if not, spin a new container
       echo "Starting a new container from image $IMAGE_NAME"
-      docker run -it -p 8080:8888 --gpus=all $IMAGE_NAME
+      docker run -it -p 8888:8888 --gpus=all $IMAGE_NAME
     fi
 else
     # Start the docker and mount the cloned directory, make sure the container is deleted once it is stopped ("-rm")
-    docker run --rm -it -p 8080:8888 --gpus=all -v $(pwd):/ivado ivado_labs_assignment
+    docker run --rm -it -p 8888:8888 --gpus=all -v $(pwd):/ivado ivado_labs_assignment
 fi
 
