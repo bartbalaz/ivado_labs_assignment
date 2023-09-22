@@ -62,8 +62,9 @@ def _get_location_values(location: str, location_overrides: Dict) -> Tuple[str, 
         # Create a tuple
         location_city, location_country = (tuple(location_list))
 
-    # Return the tuple of empty strings
-    return (location_city if location_city else '', location_country if location_country else '')
+    # Return a tuple with strings having removed heading or trailing white spaces or empty strings if values unavailable
+    return (location_city.lstrip().rstrip() if location_city else '',
+            location_country.lstrip().rstrip() if location_country else '')
 
 
 def _get_population(city_name: str, city_data: DataFrame, missing_city_populations: Dict) -> int:
