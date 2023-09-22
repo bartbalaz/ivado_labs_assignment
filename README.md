@@ -191,7 +191,8 @@ The custom location and population may be adjusted by modifying the **museums.lo
 ```python
 museums.create_master_data(custom_locations = True, custom_population = True)
 ```
-- Verify master data, this steps generates a table that shows all the missing cells. 
+- Verify master data, this steps generates a table that shows all the missing cells or country name not being set to a 
+value. 
 ```python
 museums.verify_master_data()
 museums.print_master_data_issues()
@@ -203,8 +204,9 @@ musemms.load_master_data() # For loading
 ```
 - The master data is stored in __museums.master_data__ module variable
 - When the master data is ready the model training may take place, create and train model. The parameters are
-**lr**: learning rate, **threshold**: minimum museum visits value to include the data point in the training set, **epochs**: The number of 
-training iterations, **test_ratio**: The percentage proportion of the datapoints to be used as the test data set
+**lr**: learning rate, **threshold**: minimum museum visits value to include the data point in the training set, 
+**epochs**: The number of training iterations, **test_ratio**: The percentage proportion of the datapoints to be used 
+as the test data set.
 ```python
 museums.create_model(lr = 0.001)
 museums.train_model(threshold=2000000, epochs: int = 20000, test_ratio=20)
