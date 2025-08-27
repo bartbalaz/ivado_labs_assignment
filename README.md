@@ -1,4 +1,4 @@
-# IVADO LABS Assignment
+# Assignment
 
 # Requirements
 
